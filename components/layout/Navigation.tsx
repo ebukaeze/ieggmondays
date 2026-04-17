@@ -10,8 +10,8 @@ const links = [
 ];
 
 export default function Navigation() {
-  const navOpen = useAppStore((s) => s.navOpen);
-  const setNavOpen = useAppStore((s) => s.setNavOpen);
+  const navOpen = useAppStore((s) => s.isNavOpen);
+  const setNavOpen = useAppStore((s) => s.setIsNavOpen);
 
   return (
     <nav className="flex items-center justify-between">
