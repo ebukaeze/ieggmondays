@@ -1,17 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
-interface MousePosition {
+export interface MousePosition {
   x: number;
   y: number;
 }
 
-export function useMousePosition(): MousePosition {
-  const [position, setPosition] = useState<MousePosition>({ x: 0, y: 0 });
+// Returns a ref so consumers can read the latest position without triggering re-renders.
+// The ref is updated on every mousemove; GSAP / rAF-based consumers should read it there.
+export function useMousePosition() {
+  const position = useRef<MousePosition>({ x: -100, y: -100 });
 
   useEffect(() => {
-    const handle = (e: MouseEvent) => setPosition({ x: e.clientX, y: e.clientY });
+    const handle = (e: MouseEvent) => {
+      position.current = { x: e.clientX, y: e.clientY };
+    };
     window.addEventListener("mousemove", handle);
     return () => window.removeEventListener("mousemove", handle);
   }, []);
